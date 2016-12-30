@@ -10,15 +10,19 @@ class App extends Component {
     super()
     this.state = {
       posts: [],
+      topics: [],
+      randomTopic: null,
+      diplayTopic: null
     }
   }
 
 componentDidMount() {
-  this.fetchPosts()
+  this.fetchTopics()
 }
 
 fetchPosts() {
-  axios.get('https://api.producthunt.com/v1/posts/all?search[topic]=cats',{
+  const { randomTopic } = this.state
+  axios.get(`https://api.producthunt.com/v1/posts/all?search[topic]=${randomTopic}`,{
     headers: {
       "accept": "application/json",
       "content-type": "application/json",
@@ -32,6 +36,30 @@ fetchPosts() {
     console.log('nope');
   })
 }
+
+fetchTopics() {
+  axios.get('https://api.producthunt.com/v1/topics',{
+    headers: {
+      "accept": "application/json",
+      "content-type": "application/json",
+      "authorization": `${authorization}`
+    }
+  })
+  .then((response) => {
+    this.setState({ topics: response.data.topics })
+  })
+  .catch(() => {
+    console.log('nope');
+  })
+}
+
+chooseTopic() {
+  const { topics } = this.state
+  let chosenTopic = topics[Math.floor(Math.random()*topics.length)];
+  let fixedTopic = chosenTopic.name.toLowerCase().split(' ').join('-')
+  this.setState({ randomTopic: fixedTopic, displayTopic: chosenTopic.name })
+}
+
 
 renderPosts() {
   return this.state.posts.map((post) => {
@@ -48,7 +76,9 @@ renderPosts() {
     return (
       <div className="App">
         <h1>Socket Hunt</h1>
-        {this.renderPosts()}
+        <button onClick={() => this.chooseTopic()}>Topic</button>
+        <button onClick={() => this.fetchPosts()}>Post</button>
+        {this.state.posts.length === 0 ? <h1>No Results Available for {this.state.displayTopic}</h1> : this.renderPosts() }
       </div>
     );
   }
