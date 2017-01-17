@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import '../App.css';
 import { authorization} from '../../env.json';
 import axios from 'axios'
-let endPointURL = "https://api.producthunt.com/v1/";
 
 
 class App extends Component {
