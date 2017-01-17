@@ -8,4 +8,4 @@ const posts = (state = [], action) => {
     }
 }
 
-export defualt posts
+export default posts

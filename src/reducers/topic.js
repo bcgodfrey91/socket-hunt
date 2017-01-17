@@ -8,4 +8,4 @@ const topics = (state = [], action) => {
     }
 }
 
-export defualt topics
+export default topics
