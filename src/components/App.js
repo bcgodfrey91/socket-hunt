@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../App.css';
 import { authorization} from '../../env.json';
 import axios from 'axios'
 
