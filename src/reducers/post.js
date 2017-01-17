@@ -1,11 +1,13 @@
-const posts = (state = [], action) => {
+const initialState = []
+
+const posts = (state = initialState, action) => {
   const { type, data } = action
-    switch (type) {
-      case 'GET_POSTS':
-        return [...state, ...data]
-      default:
-        return state
-    }
+  switch (type) {
+    case 'GET_POSTS':
+     return data
+    default:
+      return state
+  }
 }
 
 export default posts

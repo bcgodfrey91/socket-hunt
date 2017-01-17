@@ -1,6 +1,6 @@
 const types = {
   GET_TOPICS: 'GET_TOPICS',
-  GET_POSTS: 'GET_POSTS',
+  GET_POSTS: 'GET_POSTS'
 }
 
 export const getTopics = (data) => {

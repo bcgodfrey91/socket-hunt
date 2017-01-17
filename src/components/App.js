@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { authorization} from '../../env.json';
 import axios from 'axios'
+import infoContainer from '../containers/infoContainer'
 
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      posts: [],
-      topics: [],
       randomTopic: null,
       diplayTopic: null
     }
@@ -27,9 +26,7 @@ fetchPosts() {
       "authorization": `${authorization}`
     }
   })
-  .then((response) => {
-    this.setState({ posts: response.data.posts })
-  })
+  .then((response) => this.props.getPosts(response.data.posts))
   .catch(() => {
     console.log('nope');
   })
@@ -43,16 +40,14 @@ fetchTopics() {
       "authorization": `${authorization}`
     }
   })
-  .then((response) => {
-    this.setState({ topics: response.data.topics })
-  })
+  .then((response) => this.props.getTopics(response.data.topics))
   .catch(() => {
     console.log('nope');
   })
 }
 
 chooseTopic() {
-  const { topics } = this.state
+  const { topics } = this.props
   let chosenTopic = topics[Math.floor(Math.random()*topics.length)];
   let fixedTopic = chosenTopic.name.toLowerCase().split(' ').join('-')
   this.setState({ randomTopic: fixedTopic, displayTopic: chosenTopic.name })
@@ -60,7 +55,7 @@ chooseTopic() {
 
 
 renderPosts() {
-  return this.state.posts.map((post) => {
+  return this.props.posts.map((post) => {
     return (
       <div className="post" key={post.id}>
         <h2>{post.name}</h2>
@@ -76,10 +71,10 @@ renderPosts() {
         <h1>Socket Hunt</h1>
         <button onClick={() => this.chooseTopic()}>Topic</button>
         <button onClick={() => this.fetchPosts()}>Post</button>
-        {this.state.posts.length === 0 ? <h1>No Results Available for {this.state.displayTopic}</h1> : this.renderPosts() }
+        {this.props.posts.length === 0 ? <h1>No Results Available for {this.state.displayTopic}</h1> : this.renderPosts() }
       </div>
     );
   }
 }
 
-export default App;
+export default infoContainer(App)
