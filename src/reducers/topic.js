@@ -1,6 +1,4 @@
-const initialState = []
-
-const topics = (state = initialState, action) => {
+const topics = (state = [], action) => {
   const { type, data } = action
   switch (type) {
     case 'GET_TOPICS':

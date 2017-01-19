@@ -41,6 +41,12 @@ fetchTopics() {
     }
   })
   .then((response) => this.props.getTopics(response.data.topics))
+  .then((allTopics) => {
+    return Promise.all([allTopics, this.chooseTopic(allTopics)])
+  })
+  .then((chosenTopic) => {
+    return Promise.all([chosenTopic, this.fetchPosts(chosenTopic)])
+  })
   .catch(() => {
     console.log('nope');
   })
@@ -69,9 +75,7 @@ renderPosts() {
     return (
       <div className="App">
         <h1>Socket Hunt</h1>
-        <button onClick={() => this.chooseTopic()}>Topic</button>
-        <button onClick={() => this.fetchPosts()}>Post</button>
-        {this.props.posts.length === 0 ? <h1>No Results Available for {this.state.displayTopic}</h1> : this.renderPosts() }
+        {this.props.posts.length === 0 ? <h1>Loading...</h1> : this.renderPosts() }
       </div>
     );
   }

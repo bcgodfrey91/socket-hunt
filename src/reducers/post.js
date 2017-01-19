@@ -1,6 +1,4 @@
-const initialState = []
-
-const posts = (state = initialState, action) => {
+const posts = (state = [], action) => {
   const { type, data } = action
   switch (type) {
     case 'GET_POSTS':
